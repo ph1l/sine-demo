@@ -7,21 +7,18 @@
 int main(int argc, char *argv[])
 {
 	int	ah;
-	double  f;
+	double  f = 1.0;
 	double	r = 0.01;
 	int     s = 1000;
 	int	i;
 
-	if(argc != 4) {
-		printf("usage: %s amplitude factor sleep\n", argv[0]);
+	if(argc != 2) {
+		printf("usage: %s width\n", argv[0]);
 		return 1;
 	}
 
 
 	ah = atoi(argv[1]) / 2;
-	//f = strtod(argv[2], NULL);
-	f = atof(argv[2]);
-	s = atoi(argv[3]);
 
 	#ifdef DEBUG
 	printf( "ARGS: %s %s\n", argv[1], argv[2]);
@@ -33,12 +30,13 @@ int main(int argc, char *argv[])
 	setvbuf(stdin, NULL, _IONBF, 0);
 
 	struct pollfd p;
-	p.fd = 0;
+	p.fd = STDIN_FILENO;
 	p.events = POLLIN;
 	
 	for(;;) {
 
 		int j;
+		char c;
 
 		#ifdef DEBUG
 		printf("%g %g ",r, f);
@@ -60,8 +58,29 @@ int main(int argc, char *argv[])
 
 		r = r+(0.01*f);
 
+		p.revents=0;
+
 		poll( &p, 1, 10 );
 
-		if ( p.revents && POLLIN) return 0;
+		if ( p.revents && POLLIN){
+			read( STDIN_FILENO, &c, 1);
+			switch ( c )
+			{
+				case 'f':
+					f = f * 1.1;
+					break;
+				case 'r':
+					f = f * .9;
+					break;
+				case 'd':
+					s = s / 2;
+					break;
+				case 'e':
+					s = s * 2;
+					break;
+				case 'q':
+					return 0;
+			}
+		}
 	}
 }
