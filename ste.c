@@ -48,10 +48,18 @@ void draw_frame(w,h,frame_no,fps)
 	{
 		for (x=-max_x; x<max_x; x++)
 		{
-			putchar(27); //escape
-			printf("[1;31m");
 			if ( in_ellipse( x, y, max_x, max_y, abs(r) )==1 )
 			{
+				int c;
+				for (c=0;c < 6; c++)
+				{
+					if ( in_ellipse( x, y, max_x, max_y, abs(r)/(c+1) )==1 )
+					{
+						putchar(27);
+						printf("[1;%dm",31+(c));
+						continue;
+					}
+				}
 				putchar('@');
 			} else {
 				putchar(' ');
