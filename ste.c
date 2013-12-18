@@ -36,7 +36,6 @@ void draw_frame(w,h,frame_no,fps)
 {
 	int y=0;
 	int x=0;
-	int i=0;
 	int max_y, max_x, r;
 
 	max_y= h / 2;
