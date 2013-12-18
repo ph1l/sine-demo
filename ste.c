@@ -49,12 +49,16 @@ void draw_frame(w,h,frame_no,fps)
 	{
 		for (x=-max_x; x<max_x; x++)
 		{
+			putchar(27); //escape
+			printf("[1;31m");
 			if ( in_ellipse( x, y, max_x, max_y, abs(r) )==1 )
 			{
 				putchar('@');
 			} else {
 				putchar(' ');
 			}
+			putchar(27); //escape
+			printf("[0m");
 		}
 		printf("\n");
 	}
