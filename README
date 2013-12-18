@@ -1,0 +1,27 @@
+sine-demo
+
+This is a repo for learning C, kinda...
+
+tse
+---
+
+print scrolling sine wave centered in terminal
+
+Build:
+    $ make tse
+
+Usage:
+    $ ./tse.sh <terminal width>
+
+
+ste
+---
+
+print an elipse in standard terminal window (80x24)
+
+Build:
+    $ make ste
+
+Usage:
+    $ ./ste
+
