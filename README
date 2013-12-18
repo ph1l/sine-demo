@@ -13,11 +13,16 @@ Build:
 Usage:
     $ ./tse.sh <terminal width>
 
+Hotkeys:
+ * f / r = increase / decrease wavelength
+ * d / e = half / double delay between printed lines
+ * q     = quit
+
 
 ste
 ---
 
-print an elipse in standard terminal window (80x24)
+print an elipse in standard terminal window (80x24) w/ ANSI colors
 
 Build:
     $ make ste
