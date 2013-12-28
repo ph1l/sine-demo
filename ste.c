@@ -22,12 +22,43 @@ int in_ellipse( int x, int y, int a, int b, int r );
 int main()
 {
 	int f=0;
+	struct timespec ts, old_ts, sleep;
+	long frame_length;
+	long long nanosecs;
+
+	frame_length = 1000000000/FPS;
+
+	if ( clock_gettime ( CLOCK_MONOTONIC, &old_ts ) ){
+		perror ("clock_gettime");
+		return 1;
+	}
+
 	//printf( "WIDTH %d HEIGHT %d\n", WIDTH, HEIGHT );
 	for (;;)
 	{
 		f++;
 		draw_frame( WIDTH, HEIGHT, f, FPS );
-		usleep(1000000/FPS);
+
+		if ( clock_gettime ( CLOCK_MONOTONIC, &ts ) ){
+			perror ("clock_gettime");
+			return 1;
+		}
+
+		nanosecs = (ts.tv_nsec - old_ts.tv_nsec) + ((ts.tv_sec - old_ts.tv_sec)*1000000000);
+
+		old_ts.tv_sec = ts.tv_sec;
+		old_ts.tv_nsec = ts.tv_nsec;
+
+		if (nanosecs>=frame_length) {
+			printf("frame_length overrun: %lli / %li, skiping sleep..\n",nanosecs, frame_length);
+		} else {
+			sleep.tv_sec = 0;
+			sleep.tv_nsec = frame_length - nanosecs;
+			//printf("sleeping: %li..\n",sleep.tv_nsec);
+			if (nanosleep (&sleep, NULL))
+				perror ("nanosleep");
+		}
+
 	}
 	return(0);
 }
